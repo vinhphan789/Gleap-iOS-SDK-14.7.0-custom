@@ -202,23 +202,19 @@
         }
     } // Đã sửa ở đây
     else if ([name isEqualToString:@"open-url"]) {
+        NSString *urlString;
+        
         if ([data isKindOfClass:[NSDictionary class]]) {
-            NSString *urlString = data[@"url"];
-            if ([urlString isKindOfClass:[NSString class]]) {
-                NSURL *url = [NSURL URLWithString:urlString];
-                if (url) {
-                    [Gleap handleURL:url];
-                }
-            }
+            urlString = data[@"url"];
         } else if ([data isKindOfClass:[NSString class]]) {
-            // Trường hợp data chính là url string
-            NSURL *url = [NSURL URLWithString:(NSString *)data];
-            if (url) {
-                [Gleap handleURL:url];
-            }
-        } else {
-            NSLog(@"⚠️ Không rõ kiểu dữ liệu của `data` trong open-url: %@", data);
+            urlString = (NSString *)data;
         }
+        
+        if (urlString) {
+            [Gleap handleURL:[NSURL URLWithString:urlString]];
+        }
+    }
+    
     // đến đây
     } else if ([name isEqualToString:@"show-form"]) {
         [Gleap startFeedbackFlow:data[@"formId"] showBackButton:YES];
