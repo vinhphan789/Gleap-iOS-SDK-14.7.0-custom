@@ -205,19 +205,21 @@
         NSString *urlString = nil;
         
         if ([data isKindOfClass:[NSDictionary class]]) {
-            // data là dictionary
             urlString = data[@"url"];
         } else if ([data isKindOfClass:[NSString class]]) {
-            // data là string (chính là URL)
             urlString = (NSString *)data;
         }
         
         if (urlString) {
-            [Gleap handleURL:urlString];
+            NSURL *url = [NSURL URLWithString:urlString];
+            if (url && [[UIApplication sharedApplication] canOpenURL:url]) {
+                // Mở trực tiếp bằng Safari thay vì qua Gleap
+                [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
+            }
         }
-        
+    }
         // đến đây
-    } else if ([name isEqualToString:@"show-form"]) {
+     else if ([name isEqualToString:@"show-form"]) {
         [Gleap startFeedbackFlow:data[@"formId"] showBackButton:YES];
     } else if ([name isEqualToString:@"show-survey"]) {
         GleapSurveyFormat format = SURVEY;
