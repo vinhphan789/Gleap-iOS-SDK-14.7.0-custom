@@ -213,7 +213,6 @@
         if (urlString) {
             [Gleap handleURL:[NSURL URLWithString:urlString]];
         }
-    }
     
     // đến đây
     } else if ([name isEqualToString:@"show-form"]) {
