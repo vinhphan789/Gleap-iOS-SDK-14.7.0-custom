@@ -202,19 +202,21 @@
         }
     } // Đã sửa ở đây
     else if ([name isEqualToString:@"open-url"]) {
-        NSString *urlString;
+        NSString *urlString = nil;
         
         if ([data isKindOfClass:[NSDictionary class]]) {
+            // data là dictionary
             urlString = data[@"url"];
         } else if ([data isKindOfClass:[NSString class]]) {
+            // data là string (chính là URL)
             urlString = (NSString *)data;
         }
         
         if (urlString) {
-            [Gleap handleURL:[NSURL URLWithString:urlString]];
+            [Gleap handleURL:urlString];
         }
-    
-    // đến đây
+        
+        // đến đây
     } else if ([name isEqualToString:@"show-form"]) {
         [Gleap startFeedbackFlow:data[@"formId"] showBackButton:YES];
     } else if ([name isEqualToString:@"show-survey"]) {
