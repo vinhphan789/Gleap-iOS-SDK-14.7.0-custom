@@ -200,8 +200,26 @@
             [Gleap.sharedInstance.delegate
                 customActionCalled:data[@"action"]];
         }
-    } else if ([name isEqualToString:@"open-url"]) {
-        [Gleap handleURL:data[@"url"]];
+    } // Đã sửa ở đây
+    else if ([name isEqualToString:@"open-url"]) {
+        if ([data isKindOfClass:[NSDictionary class]]) {
+            NSString *urlString = data[@"url"];
+            if ([urlString isKindOfClass:[NSString class]]) {
+                NSURL *url = [NSURL URLWithString:urlString];
+                if (url) {
+                    [Gleap handleURL:url];
+                }
+            }
+        } else if ([data isKindOfClass:[NSString class]]) {
+            // Trường hợp data chính là url string
+            NSURL *url = [NSURL URLWithString:(NSString *)data];
+            if (url) {
+                [Gleap handleURL:url];
+            }
+        } else {
+            NSLog(@"⚠️ Không rõ kiểu dữ liệu của `data` trong open-url: %@", data);
+        }
+    // đến đây
     } else if ([name isEqualToString:@"show-form"]) {
         [Gleap startFeedbackFlow:data[@"formId"] showBackButton:YES];
     } else if ([name isEqualToString:@"show-survey"]) {
